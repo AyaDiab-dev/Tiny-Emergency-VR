@@ -4,29 +4,54 @@ using UnityEngine.InputSystem.XR;
 public class ClinicUIManager : MonoBehaviour
 {
     public GameObject mainMenuPanel;
+    public GameObject pausePanel;
+    public GameObject pauseButton;
     public GameObject locomotion;
     public TrackedPoseDriver headTracking;
 
     void Start()
     {
-        // قبل START: ممنوع التنقل
-        locomotion.SetActive(false);
+        mainMenuPanel.SetActive(true);
+        pausePanel.SetActive(false);
+        pauseButton.SetActive(false);
 
-        // مسموح فقط يلف راسه
-        headTracking.trackingType =
-            TrackedPoseDriver.TrackingType.RotationOnly;
+        if (locomotion != null)
+            locomotion.SetActive(false);
+
+        if (headTracking != null)
+            headTracking.trackingType =
+                TrackedPoseDriver.TrackingType.RotationOnly;
     }
 
     public void StartGame()
     {
-        // إخفاء القائمة
         mainMenuPanel.SetActive(false);
+        pausePanel.SetActive(false);
+        pauseButton.SetActive(true);
 
-        // تشغيل الحركة
-        locomotion.SetActive(true);
+        if (locomotion != null)
+            locomotion.SetActive(true);
 
-        // إعادة تتبع الرأس الكامل
-        headTracking.trackingType =
-            TrackedPoseDriver.TrackingType.RotationAndPosition;
+        if (headTracking != null)
+            headTracking.trackingType =
+                TrackedPoseDriver.TrackingType.RotationAndPosition;
+    }
+
+    public void PauseGame()
+    {
+        pausePanel.SetActive(true);
+        pauseButton.SetActive(false);
+
+        if (locomotion != null)
+            locomotion.SetActive(false);
+    }
+
+    public void ResumeGame()
+    {
+        pausePanel.SetActive(false);
+        pauseButton.SetActive(true);
+
+        if (locomotion != null)
+            locomotion.SetActive(true);
     }
 }
